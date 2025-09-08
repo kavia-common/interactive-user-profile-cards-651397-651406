@@ -1,82 +1,180 @@
-# Lightweight React Template for KAVIA
+# Interactive User Profile Cards — Frontend (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+## Introduction
 
-## Features
+### Overview
+This frontend application lets you generate and customize interactive user profile cards with selectable themes. It follows a minimalist “Soft Mono” style guide, emphasizing clean typography, generous whitespace, and subtle visual accents. You can edit name, title, bio, avatar image URL, and add multiple links. The app provides a live preview and supports exporting your card to PNG or saving your configuration as JSON.
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+### Scope
+This README explains how to set up, run, develop, customize themes, export cards, run tests, and use the app effectively.
 
 ## Getting Started
 
-In the project directory, you can run:
+### Prerequisites
+- Node.js 16+ and npm installed.
 
-### `npm start`
+### Installation
+1. Navigate to the frontend container:
+   - cd interactive-user-profile-cards-651397-651406/frontend_react_js
+2. Install dependencies:
+   - npm install
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+No environment variables are required for this container.
 
-### `npm test`
+## Development
 
-Launches the test runner in interactive watch mode.
+### Run the app
+- npm start
 
-### `npm run build`
+This starts the development server and opens the app at:
+- http://localhost:3000
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The page automatically reloads on code changes. Lint messages and runtime errors appear in the console.
 
-## Customization
+### Build for production
+- npm run build
 
-### Colors
+This produces an optimized build in the build/ folder.
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+## Application Guide
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
+### Layout and Flow
+- Top navigation: Choose the active theme.
+- Left panel (Editor): Enter name, title, bio, avatar URL, and add/remove links.
+- Right panel (Preview): Live preview of the profile card.
+- Export bar: Export PNG and Export JSON buttons below the editor.
 
-### Components
+### Editing the Card
+- Name: Shown prominently on the card.
+- Title: Secondary line beneath the name.
+- Bio: A short paragraph; keep it concise.
+- Avatar URL: Any publicly accessible image URL. If left blank, an initial placeholder is displayed.
+- Links: Add multiple links with a label and a URL. You can remove individual links as needed.
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+## Theme Customization
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+### Built-in Themes
+The app includes three Soft Mono variants:
+- Soft Mono: Monochrome with warm touches
+- Warm Mono: Softer contrasts, warmer subtle surfaces
+- Deep Mono: Darker grayscale with crisp text
 
-## Learn More
+Select a theme using the theme dropdown in the top navigation. Theme tokens are applied to the document root as CSS variables, ensuring a consistent look.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Theme Tokens and CSS Variables
+Themes are defined in src/App.js and written to CSS variables used by src/App.css:
 
-### Code Splitting
+- --sm-bg: Background
+- --sm-surface: Surface (panels, card frame)
+- --sm-text: Primary text color
+- --sm-primary: Accent color for buttons and highlights
+- --sm-secondary: Secondary accents
+- --sm-success: Success color
+- --sm-error: Error color
+- --sm-subtle: Borders/dividers and subtle outlines
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+You can adjust spacing, border radii, and shadows via:
+- --sm-radius, --sm-radius-sm
+- --sm-shadow, --sm-shadow-soft
+- --sm-spacing, --sm-spacing-lg, --sm-spacing-xl
+- --sm-font
 
-### Analyzing the Bundle Size
+These are defined in src/App.css under the “Soft Mono Minimalist Theme Variables” section.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Adding a New Theme
+1. Open src/App.js.
+2. Locate the SOFT_MONO_THEMES object.
+3. Add a new key with a structure similar to existing entries:
+   {
+     name: 'My Theme',
+     description: 'Short description',
+     primary: '#...',
+     secondary: '#...',
+     success: '#10B981',
+     error: '#EF4444',
+     background: '#...',
+     surface: '#FFFFFF',
+     text: '#111827',
+     subtle: '#E5E7EB'
+   }
+4. The theme automatically appears in the theme selector.
 
-### Making a Progressive Web App
+Tip: Try to keep contrast ratios high for accessibility and legibility.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Exporting Cards
 
-### Advanced Configuration
+### Export as PNG
+- Click “Export PNG” to download a snapshot of the card preview area.
+- Implementation details:
+  - The app lazily imports html-to-image to convert the preview node to a PNG.
+  - Pixel ratio and background color are set to ensure crisp output in the chosen theme.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If the browser blocks downloads or the export fails, you will see a console error and an alert. Try again or check that the preview is visible.
 
-### Deployment
+### Export as JSON
+- Click “Export JSON” to download a profile-card.json file containing:
+  {
+    "themeKey": "SoftMono | WarmMono | DeepMono",
+    "profile": {
+      "name": "...",
+      "title": "...",
+      "bio": "...",
+      "avatarUrl": "...",
+      "links": [{ "label": "...", "url": "..." }]
+    }
+  }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+You can store this configuration and rehydrate it by manually pasting the values into the editor fields.
 
-### `npm run build` fails to minify
+## Testing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Run tests
+- npm test
+
+The project uses react-scripts test with @testing-library/jest-dom setup in src/setupTests.js. A basic test exists in src/App.test.js to ensure the main heading renders:
+- Renders “Create your card” in the editor panel.
+
+For CI environments where you want the test to run once and exit, use:
+- CI=true npm test
+
+### Writing Additional Tests
+- Place tests alongside components or in src/ with .test.js naming.
+- Use @testing-library/react utilities for DOM interactions and assertions.
+
+## Code Structure
+
+### Key Files
+- src/App.js: Main application, components, and theme definition.
+- src/App.css: Soft Mono minimalist style and utility classes.
+- src/index.js: React entry point.
+- src/App.test.js: Example test.
+- src/setupTests.js: Testing library configuration.
+
+### Public Interfaces (in App.js)
+- useSoftMonoTheme(activeKey): Applies theme variables to document root and returns theme tokens.
+- TopNav: Navigation bar with theme selector.
+- CardEditor: Form for updating profile data.
+- ProfileCard: Renders the card based on profile data.
+- ExportBar: Buttons to export PNG and JSON.
+
+## Usage Tips
+
+### Avatar Images
+- Use a square image URL for best results; the preview crops via object-fit: cover.
+- If the URL fails or CORS blocks the fetch, the placeholder initial is shown.
+
+### Links
+- Use descriptive labels like “GitHub”, “LinkedIn”, or “Portfolio” for clarity.
+- External links open in a new tab and use rel="noreferrer".
+
+### Accessibility
+- Labels, aria- attributes, and proper semantics are used to improve keyboard and screen reader experiences.
+- Maintain good contrast when customizing themes.
+
+### Troubleshooting
+- Blank page: Check the browser console for errors and ensure npm start is running.
+- PNG export issues: Verify that the preview is visible and the browser allows downloads. Some remote images may block cross-origin rendering; prefer images that permit CORS.
+- Styling looks off: Verify the theme variables in src/App.css and that useSoftMonoTheme is invoked with the desired themeKey.
+
+## License
+This project uses a lightweight React template and custom code for the profile card editor. Review your organization’s license policies before distribution.
